@@ -22,8 +22,8 @@ getgenv().crosshair = {
     spin = false,
     spin_speed = 150,
     spin_max = 340,
-    spin_style = Enum.EasingStyle.Circular, -- Linear for normal smooth spin
-    resize = false, -- animate the length
+    spin_style = Enum.EasingStyle.Circular,
+    resize = false,
     resize_speed = 150,
     resize_min = 5,
     resize_max = 22,
@@ -45,25 +45,23 @@ local drawings = {
 }
 
 drawings.text.Text.Size = crosshair.textsize
-drawings.text.Text.Font = 2
 drawings.text.Text.Outline = true
 drawings.text.Text.Text = "Elisium.lol"
 drawings.text.Text.Color = crosshair.textcolor
 drawings.text.Text.Center = true
 
 drawings.text.Indicator.Size = crosshair.textsize
-drawings.text.Indicator.Font = 2
 drawings.text.Indicator.Outline = true
 drawings.text.Indicator.Center = true
 drawings.text.Indicator.Color = Color3.new(1, 1, 1)
 
-local currentLines = crosshair.lines -- Track the current number of lines
-local currentWidth = crosshair.width -- Track the current width
+local currentLines = crosshair.lines
+local currentWidth = crosshair.width
 
 local function createCrosshairLines()
     for _, line in pairs(drawings.crosshair) do
-        line[1]:Remove() -- Remove outline
-        line[2]:Remove() -- Remove inline
+        line[1]:Remove()
+        line[2]:Remove()
     end
     drawings.crosshair = {}
 
@@ -71,18 +69,18 @@ local function createCrosshairLines()
         local outline = Drawing.new('Line')
         outline.Color = Color3.new(0, 0, 0)
         outline.Thickness = crosshair.width + 2
-        outline.ZIndex = 1 -- Lower ZIndex for outline
+        outline.ZIndex = 1
 
         local inline = Drawing.new('Line')
         inline.Color = crosshair.color
         inline.Thickness = crosshair.width
-        inline.ZIndex = 2 -- Higher ZIndex for inline
+        inline.ZIndex = 2
 
         drawings.crosshair[idx] = {outline, inline}
     end
 end
 
-createCrosshairLines() -- Initialize crosshair lines
+createCrosshairLines()
 
 function solve(angle, radius)
     return Vector2.new(
@@ -100,7 +98,7 @@ runservice.PostSimulation:Connect(function()
         if currentLines ~= crosshair.lines or currentWidth ~= crosshair.width then
             currentLines = crosshair.lines
             currentWidth = crosshair.width
-            createCrosshairLines() -- Recreate the lines if the count or width has changed
+            createCrosshairLines()
         end
 
         local position = (
@@ -129,10 +127,10 @@ runservice.PostSimulation:Connect(function()
         
         if crosshair.enabled then
             for idx = 1, crosshair.lines do
-                local outline = drawings.crosshair[idx][1] -- Outline
-                local inline = drawings.crosshair[idx][2]  -- Inline
+                local outline = drawings.crosshair[idx][1]
+                local inline = drawings.crosshair[idx][2]
 
-                local angle = (idx - 1) * (360 / crosshair.lines) -- Distribute angles evenly
+                local angle = (idx - 1) * (360 / crosshair.lines)
                 local length = crosshair.length
 
                 if crosshair.spin then
@@ -158,8 +156,8 @@ runservice.PostSimulation:Connect(function()
             end
         else
             for idx = 1, crosshair.lines do
-                drawings.crosshair[idx][1].Visible = false -- Outline
-                drawings.crosshair[idx][2].Visible = false -- Inline
+                drawings.crosshair[idx][1].Visible = false
+                drawings.crosshair[idx][2].Visible = false
             end
         end
     end
