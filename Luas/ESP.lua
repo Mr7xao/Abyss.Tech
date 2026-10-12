@@ -1,3 +1,5 @@
+-- credits to haalfi just using because this was previously used in abyss.tech gonna make my own esp soon tho
+
 setfpscap(32555555555555555)
 local Config = {
     Box = {
